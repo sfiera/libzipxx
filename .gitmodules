@@ -1,0 +1,3 @@
+[submodule "ext/libzip"]
+	path = ext/libzip
+	url = git://git.sfiera.net/libzip
