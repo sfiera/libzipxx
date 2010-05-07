@@ -12,8 +12,7 @@
 using sfz::Bytes;
 using sfz::BytesPiece;
 using sfz::Exception;
-using sfz::FormatItem;
-using sfz::FormatItemPrinter;
+using sfz::PrintTarget;
 using sfz::String;
 using sfz::StringPiece;
 using sfz::ascii_encoding;
@@ -32,36 +31,34 @@ class AutoCloseZipFile {
     zip_file* _file;
 };
 
-class ZipErrorFormatter : public FormatItemPrinter {
-  public:
+struct ZipErrorFormatter {
     ZipErrorFormatter(int ze, int se)
-        : _zip_error(ze),
-          _system_error(se) { }
+        : zip_error(ze),
+          system_error(se) { }
 
-    virtual void print_to(String* out) const {
-        int size = zip_error_to_str(NULL, 0, _zip_error, _system_error);
-        scoped_array<char> buf(new char[size + 1]);
-        zip_error_to_str(buf.get(), size + 1, _zip_error, _system_error);
-        out->append(buf.get(), ascii_encoding());
-    }
-
-  private:
-    const int _zip_error;
-    const int _system_error;
+    const int zip_error;
+    const int system_error;
 };
 
-FormatItem zip_error(int ze, int se) {
-    return FormatItem::make(new ZipErrorFormatter(ze, se));
+void print_to(PrintTarget out, const ZipErrorFormatter& error) {
+    int size = zip_error_to_str(NULL, 0, error.zip_error, error.system_error);
+    scoped_array<char> buf(new char[size + 1]);
+    zip_error_to_str(buf.get(), size + 1, error.zip_error, error.system_error);
+    print_to(out, buf.get());
 }
 
-FormatItem zip_error(zip* archive) {
+ZipErrorFormatter zip_error(int ze, int se) {
+    return ZipErrorFormatter(ze, se);
+}
+
+ZipErrorFormatter zip_error(zip* archive) {
     int ze;
     int se;
     zip_error_get(archive, &ze, &se);
     return zip_error(ze, se);
 }
 
-FormatItem zip_error(zip_file* file) {
+ZipErrorFormatter zip_error(zip_file* file) {
     int ze;
     int se;
     zip_file_error_get(file, &ze, &se);
