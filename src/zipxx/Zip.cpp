@@ -7,16 +7,15 @@
 
 #include <errno.h>
 #include <zip.h>
-#include "sfz/Exception.hpp"
+#include "sfz/sfz.hpp"
 
-using sfz::Bytes;
 using sfz::BytesPiece;
+using sfz::CString;
 using sfz::Exception;
 using sfz::PrintTarget;
 using sfz::String;
 using sfz::StringPiece;
-using sfz::ascii_encoding;
-using sfz::utf8_encoding;
+using sfz::format;
 using sfz::scoped_array;
 
 namespace zipxx {
@@ -70,12 +69,11 @@ ZipErrorFormatter zip_error(zip_file* file) {
 ZipArchive::ZipArchive(const StringPiece& path, int flags)
     : _path(path) {
     int error;
-    Bytes path_bytes(path, utf8_encoding());
-    path_bytes.resize(path_bytes.size() + 1);
-    const char* c_path = reinterpret_cast<const char*>(path_bytes.data());
+    CString c_str(path);
+    const char* c_path = reinterpret_cast<const char*>(c_str.data());
     _zip = zip_open(c_path, 0, &error);
     if (_zip == NULL) {
-        throw Exception("{0}: {1}", path, zip_error(error, errno));
+        throw Exception(format("{0}: {1}", path, zip_error(error, errno)));
     }
 }
 
@@ -90,24 +88,25 @@ zip* ZipArchive::c_obj() { return _zip; }
 
 ZipFileReader::ZipFileReader(ZipArchive* archive, const StringPiece& path) {
     struct zip_stat st;
-    Bytes path_bytes(path, utf8_encoding());
-    path_bytes.resize(path_bytes.size() + 1);
-    const char* c_path = reinterpret_cast<const char*>(path_bytes.data());
+    CString c_str(path);
+    const char* c_path = reinterpret_cast<const char*>(c_str.data());
     if (zip_stat(archive->c_obj(), c_path, 0, &st) != 0) {
-        throw Exception("{0}: {1}: {2}", archive->path(), path, zip_error(archive->c_obj()));
+        throw Exception(format(
+                    "{0}: {1}: {2}", archive->path(), path, zip_error(archive->c_obj())));
     }
     _size = st.size;
     _data.reset(new uint8_t[_size]);
 
     zip_file* file = zip_fopen(archive->c_obj(), c_path, 0);
     if (file == NULL) {
-        throw Exception("{0}: {1}: {2}", archive->path(), path, zip_error(archive->c_obj()));
+        throw Exception(format(
+                    "{0}: {1}: {2}", archive->path(), path, zip_error(archive->c_obj())));
     }
     AutoCloseZipFile close(file);
 
     int bytes_read = zip_fread(file, _data.get(), _size);
     if (bytes_read < 0 || static_cast<unsigned int>(bytes_read) != _size) {
-        throw Exception("{0}: {1}: {2}", archive->path(), path, zip_error(file));
+        throw Exception(format("{0}: {1}: {2}", archive->path(), path, zip_error(file)));
     }
 }
 

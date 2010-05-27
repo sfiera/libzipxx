@@ -7,10 +7,7 @@
 #define ZIPXX_ZIP_HPP_
 
 #include <exception>
-#include "sfz/Bytes.hpp"
-#include "sfz/Macros.hpp"
-#include "sfz/SmartPtr.hpp"
-#include "sfz/String.hpp"
+#include "sfz/sfz.hpp"
 
 struct zip;
 struct zip_file;
