@@ -11,6 +11,7 @@
 
 struct zip;
 struct zip_file;
+struct zip_stat;
 
 namespace zipxx {
 
@@ -21,10 +22,12 @@ class ZipArchive {
 
     const sfz::String& path() const;
 
+    size_t size() const;
+
     zip* c_obj();
 
   private:
-    zip* _zip;
+    zip* _c_obj;
 
     sfz::String _path;
 
@@ -33,13 +36,17 @@ class ZipArchive {
 
 class ZipFileReader {
   public:
+    ZipFileReader(ZipArchive* archive, int index);
     ZipFileReader(ZipArchive* archive, const sfz::StringPiece& path);
 
-    sfz::BytesPiece data() const;
+    const sfz::String& path() const;
+    const sfz::Bytes& data() const;
 
   private:
-    size_t _size;
-    sfz::scoped_array<uint8_t> _data;
+    void initialize(ZipArchive* archive, const struct zip_stat& st);
+
+    sfz::String _path;
+    sfz::Bytes _data;
 
     DISALLOW_COPY_AND_ASSIGN(ZipFileReader);
 };
