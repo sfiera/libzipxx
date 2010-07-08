@@ -10,3 +10,6 @@
 [submodule "ext/googletest"]
 	path = ext/googletest
 	url = git://github.com/sfiera/googletest.git
+[submodule "ext/gyputil"]
+	path = ext/gyputil
+	url = git://github.com/sfiera/gyputil.git
