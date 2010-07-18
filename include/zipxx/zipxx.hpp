@@ -6,6 +6,6 @@
 #ifndef ZIPXX_ZIPXX_HPP_
 #define ZIPXX_ZIPXX_HPP_
 
-#include "zipxx/Zip.hpp"
+#include <zipxx/Zip.hpp>
 
 #endif  // ZIPXX_ZIPXX_HPP_

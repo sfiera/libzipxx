@@ -7,7 +7,7 @@
 #define ZIPXX_ZIP_HPP_
 
 #include <exception>
-#include "sfz/sfz.hpp"
+#include <sfz/sfz.hpp>
 
 struct zip;
 struct zip_file;

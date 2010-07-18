@@ -7,7 +7,7 @@
 
 #include <errno.h>
 #include <zip.h>
-#include "sfz/sfz.hpp"
+#include <sfz/sfz.hpp>
 
 using sfz::Bytes;
 using sfz::CString;
