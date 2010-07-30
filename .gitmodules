@@ -13,3 +13,6 @@
 [submodule "ext/gyputil"]
 	path = ext/gyputil
 	url = git://github.com/sfiera/gyputil.git
+[submodule "ext/gyp"]
+	path = ext/gyp
+	url = git://github.com/sfiera/gyp.git
