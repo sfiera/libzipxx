@@ -12,7 +12,6 @@
                 'src/zipxx/Zip.cpp',
             ],
             'dependencies': [
-                ':check-deps',
                 '<(DEPTH)/ext/libsfz/libsfz.gyp:libsfz',
                 '<(DEPTH)/ext/libzip/libzip.gyp:libzip',
             ],
