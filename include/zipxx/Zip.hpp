@@ -17,7 +17,7 @@ namespace zipxx {
 
 class ZipArchive {
   public:
-    ZipArchive(const sfz::StringPiece& path, int flags);
+    ZipArchive(const sfz::StringSlice& path, int flags);
     ~ZipArchive();
 
     const sfz::String& path() const;
@@ -37,7 +37,7 @@ class ZipArchive {
 class ZipFileReader {
   public:
     ZipFileReader(ZipArchive* archive, int index);
-    ZipFileReader(ZipArchive* archive, const sfz::StringPiece& path);
+    ZipFileReader(ZipArchive* archive, const sfz::StringSlice& path);
 
     const sfz::String& path() const;
     const sfz::Bytes& data() const;

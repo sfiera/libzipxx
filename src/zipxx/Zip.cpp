@@ -14,7 +14,7 @@ using sfz::CString;
 using sfz::Exception;
 using sfz::PrintTarget;
 using sfz::String;
-using sfz::StringPiece;
+using sfz::StringSlice;
 using sfz::format;
 using sfz::scoped_array;
 
@@ -68,7 +68,7 @@ ZipErrorFormatter zip_error(zip_file* file) {
 
 }  // namespace
 
-ZipArchive::ZipArchive(const StringPiece& path, int flags)
+ZipArchive::ZipArchive(const StringSlice& path, int flags)
     : _path(path) {
     int error;
     CString c_str(path);
@@ -97,7 +97,7 @@ size_t ZipArchive::size() const {
     return zip_get_num_files(_c_obj);
 }
 
-ZipFileReader::ZipFileReader(ZipArchive* archive, const StringPiece& path) {
+ZipFileReader::ZipFileReader(ZipArchive* archive, const StringSlice& path) {
     struct zip_stat st;
     CString c_str(path);
     if (zip_stat(archive->c_obj(), c_str.data(), 0, &st) != 0) {
@@ -127,7 +127,7 @@ void ZipFileReader::initialize(ZipArchive* archive, const struct zip_stat& st) {
     AutoCloseZipFile close(file);
 
     _data.resize(st.size);
-    int bytes_read = zip_fread(file, _data.mutable_data(), _data.size());
+    int bytes_read = zip_fread(file, _data.data(), _data.size());
     if ((bytes_read < 0) || (bytes_read - _data.size() != 0)) {
         throw Exception(format("{0}: {1}: {2}", archive->path(), _path, zip_error(file)));
     }
