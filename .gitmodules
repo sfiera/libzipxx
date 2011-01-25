@@ -1,6 +1,3 @@
-[submodule "ext/libzip"]
-	path = ext/libzip
-	url = git://github.com/sfiera/libzip.git
 [submodule "ext/libsfz"]
 	path = ext/libsfz
 	url = git://github.com/sfiera/libsfz.git
