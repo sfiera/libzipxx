@@ -1,11 +1,5 @@
 # -*- mode: python -*-
 
-DEFAULTS = {
-    "cflags": "-Wall -Werror",
-    "cxxflags": "-Wall -Werror",
-    "arch": "x86_64 i386 ppc",
-}
-
 def common(ctx):
     ctx.load("compiler_c")
     ctx.load("compiler_cxx")
@@ -27,13 +21,18 @@ def build(bld):
         target="libzipxx/libzipxx",
         source="src/zipxx/Zip.cpp",
         cxxflags="-Wall -Werror",
-        arch="x86_64 i386 ppc",
         includes="./include",
         export_includes="./include",
         use=[
             "libsfz/libsfz",
             "libzipxx/libzip",
         ],
+    )
+
+    bld.platform(
+        target="libzipxx/libzipxx",
+        platform="darwin",
+        arch="x86_64 i386 ppc",
     )
 
     bld.stlib(
@@ -95,46 +94,43 @@ def build(bld):
             "libzip-0.9.3/lib/zip_unchange_data.c",
         ],
         cflags="-Wall -Werror",
-        arch="x86_64 i386 ppc",
-        includes=[
-            "./config/mac",
-            "./libzip-0.9.3/lib",
-        ],
+        includes="./libzip-0.9.3/lib",
         export_includes="./libzip-0.9.3/lib",
         use=[
             "libzipxx/system/libz",
         ],   
     )
 
-    bld.program(
-        target="zipcmp",
-        source="libzip-0.9.3/src/zipcmp.c",
-        cflags="-Wall -Werror",
+    bld.platform(
+        target="libzipxx/libzip",
+        platform="darwin",
         arch="x86_64 i386 ppc",
         includes="./config/mac",
-        use=[
-            "libzipxx/libzip",
-        ],
     )
 
-    bld.program(
-        target="zipmerge",
-        source="libzip-0.9.3/src/zipmerge.c",
-        cflags="-Wall -Werror",
-        arch="x86_64 i386 ppc",
-        includes="./config/mac",
-        use=[
-            "libzipxx/libzip",
-        ],
+    bld.platform(
+        target="libzipxx/libzip",
+        platform="linux",
+        includes="./config/linux",
     )
 
-    bld.program(
-        target="ziptorrent",
-        source="libzip-0.9.3/src/ziptorrent.c",
-        cflags="-Wall -Werror",
-        arch="x86_64 i386 ppc",
-        includes="./config/mac",
-        use=[
-            "libzipxx/libzip",
-        ],
-    )
+    def program(name):
+        bld.program(
+            target="libzipxx/%s" % name,
+            source="libzip-0.9.3/src/%s.c" % name,
+            cflags="-Wall -Werror",
+            includes="./config/mac",
+            use=[
+                "libzipxx/libzip",
+            ],
+        )
+
+        bld.platform(
+            target="libzipxx/%s" % name,
+            platform="darwin",
+            arch="x86_64 i386 ppc",
+        )
+
+    program("zipcmp")
+    # program("zipmerge")
+    program("ziptorrent")
