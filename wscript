@@ -1,10 +1,8 @@
 # -*- mode: python -*-
 
 def common(ctx):
-    ctx.load("compiler_c")
-    ctx.load("compiler_cxx")
-    ctx.load("externals", "ext/waf-sfiera")
-    ctx.load("platforms", "ext/waf-sfiera")
+    ctx.load("compiler_c compiler_cxx")
+    ctx.load("core externals", "ext/waf-sfiera")
     ctx.external("libsfz")
 
 def options(opt):
