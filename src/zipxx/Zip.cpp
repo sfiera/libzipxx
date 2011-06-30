@@ -97,39 +97,39 @@ size_t ZipArchive::size() const {
     return zip_get_num_files(_c_obj);
 }
 
-ZipFileReader::ZipFileReader(ZipArchive* archive, const StringSlice& path) {
+ZipFileReader::ZipFileReader(ZipArchive& archive, const StringSlice& path) {
     struct zip_stat st;
     CString c_str(path);
-    if (zip_stat(archive->c_obj(), c_str.data(), 0, &st) != 0) {
+    if (zip_stat(archive.c_obj(), c_str.data(), 0, &st) != 0) {
         throw Exception(format(
-                    "{0}: {1}: {2}", archive->path(), path, zip_error(archive->c_obj())));
+                    "{0}: {1}: {2}", archive.path(), path, zip_error(archive.c_obj())));
     }
     initialize(archive, st);
 }
 
-ZipFileReader::ZipFileReader(ZipArchive* archive, int index) {
+ZipFileReader::ZipFileReader(ZipArchive& archive, int index) {
     struct zip_stat st;
-    if (zip_stat_index(archive->c_obj(), index, 0, &st) != 0) {
+    if (zip_stat_index(archive.c_obj(), index, 0, &st) != 0) {
         throw Exception(format(
-                    "{0}: {1}: {2}", archive->path(), index, zip_error(archive->c_obj())));
+                    "{0}: {1}: {2}", archive.path(), index, zip_error(archive.c_obj())));
     }
     initialize(archive, st);
 }
 
-void ZipFileReader::initialize(ZipArchive* archive, const struct zip_stat& st) {
+void ZipFileReader::initialize(ZipArchive& archive, const struct zip_stat& st) {
     _path.assign(utf8::decode(st.name));
 
-    zip_file* file = zip_fopen_index(archive->c_obj(), st.index, 0);
+    zip_file* file = zip_fopen_index(archive.c_obj(), st.index, 0);
     if (file == NULL) {
         throw Exception(format(
-                    "{0}: {1}: {2}", archive->path(), _path, zip_error(archive->c_obj())));
+                    "{0}: {1}: {2}", archive.path(), _path, zip_error(archive.c_obj())));
     }
     AutoCloseZipFile close(file);
 
     _data.resize(st.size);
     int bytes_read = zip_fread(file, _data.data(), _data.size());
     if ((bytes_read < 0) || (bytes_read - _data.size() != 0)) {
-        throw Exception(format("{0}: {1}: {2}", archive->path(), _path, zip_error(file)));
+        throw Exception(format("{0}: {1}: {2}", archive.path(), _path, zip_error(file)));
     }
 }
 
