@@ -36,14 +36,14 @@ class ZipArchive {
 
 class ZipFileReader {
   public:
-    ZipFileReader(ZipArchive* archive, int index);
-    ZipFileReader(ZipArchive* archive, const sfz::StringSlice& path);
+    ZipFileReader(ZipArchive& archive, int index);
+    ZipFileReader(ZipArchive& archive, const sfz::StringSlice& path);
 
     const sfz::String& path() const;
     const sfz::Bytes& data() const;
 
   private:
-    void initialize(ZipArchive* archive, const struct zip_stat& st);
+    void initialize(ZipArchive& archive, const struct zip_stat& st);
 
     sfz::String _path;
     sfz::Bytes _data;
