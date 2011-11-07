@@ -17,6 +17,7 @@ def build(bld):
 
     bld.stlib(
         target="libzipxx/libzipxx",
+        features="universal",
         source="src/zipxx/Zip.cpp",
         cxxflags="-Wall -Werror",
         includes="./include",
@@ -27,14 +28,9 @@ def build(bld):
         ],
     )
 
-    bld.platform(
-        target="libzipxx/libzipxx",
-        platform="darwin",
-        arch="x86_64 i386 ppc",
-    )
-
     bld.stlib(
         target="libzipxx/libzip",
+        features="universal",
         source=[
             "libzip-0.9.3/lib/mkstemp.c",
             "libzip-0.9.3/lib/zip_add.c",
@@ -102,7 +98,6 @@ def build(bld):
     bld.platform(
         target="libzipxx/libzip",
         platform="darwin",
-        arch="x86_64 i386 ppc",
         includes="./config/mac",
     )
 
@@ -115,18 +110,13 @@ def build(bld):
     def program(name):
         bld.program(
             target="libzipxx/%s" % name,
+            features="universal",
             source="libzip-0.9.3/src/%s.c" % name,
             cflags="-Wall -Werror",
             includes="./config/mac",
             use=[
                 "libzipxx/libzip",
             ],
-        )
-
-        bld.platform(
-            target="libzipxx/%s" % name,
-            platform="darwin",
-            arch="x86_64 i386 ppc",
         )
 
     program("zipcmp")
