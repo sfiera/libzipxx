@@ -87,7 +87,6 @@ def build(bld):
             "libzip-0.9.3/lib/zip_unchange_archive.c",
             "libzip-0.9.3/lib/zip_unchange_data.c",
         ],
-        cflags="-Wall -Werror",
         includes="./libzip-0.9.3/lib",
         export_includes="./libzip-0.9.3/lib",
         use=[
@@ -112,7 +111,6 @@ def build(bld):
             target="libzipxx/%s" % name,
             features="universal",
             source="libzip-0.9.3/src/%s.c" % name,
-            cflags="-Wall -Werror",
             includes="./config/mac",
             use=[
                 "libzipxx/libzip",
