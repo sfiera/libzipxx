@@ -1,8 +1,9 @@
 # -*- mode: python -*-
 
 def common(ctx):
-    ctx.default_sdk = "10.6"
+    ctx.default_sdk = "10.7"
     ctx.default_compiler = "clang"
+    ctx.cxx_std = "c++11"
     ctx.load("compiler_c compiler_cxx")
     ctx.load("core externals", "ext/waf-sfiera")
     ctx.external("libsfz")
