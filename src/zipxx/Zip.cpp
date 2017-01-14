@@ -16,7 +16,7 @@ using sfz::PrintTarget;
 using sfz::String;
 using sfz::StringSlice;
 using sfz::format;
-using sfz::scoped_array;
+using std::unique_ptr;
 
 namespace utf8 = sfz::utf8;
 
@@ -43,7 +43,7 @@ struct ZipErrorFormatter {
 
 void print_to(PrintTarget out, const ZipErrorFormatter& error) {
     int size = zip_error_to_str(NULL, 0, error.zip_error, error.system_error);
-    scoped_array<char> buf(new char[size + 1]);
+    unique_ptr<char[]> buf(new char[size + 1]);
     zip_error_to_str(buf.get(), size + 1, error.zip_error, error.system_error);
     print_to(out, buf.get());
 }
