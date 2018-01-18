@@ -13,11 +13,13 @@ config("libzipxx_public") {
 
 static_library("libzipxx") {
   sources = [
+    "include/zipxx/Zip.hpp",
+    "include/zipxx/zipxx.hpp",
     "src/zipxx/Zip.cpp",
   ]
   public_deps = [
     ":libzip",
-    "//ext/libsfz",
+    "//ext/procyon:procyon-cpp",
   ]
   public_configs = [ ":libzipxx_public" ]
 }
