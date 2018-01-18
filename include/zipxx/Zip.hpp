@@ -1,13 +1,15 @@
 // Copyright (c) 2009 Chris Pickel <sfiera@gmail.com>
 //
-// This file is part of libzipxx, a free software project.  You can redistribute it and/or modify
+// This file is part of libzipxx, a free software project.  You can redistribute
+// it and/or modify
 // it under the terms of the MIT License.
 
 #ifndef ZIPXX_ZIP_HPP_
 #define ZIPXX_ZIP_HPP_
 
 #include <exception>
-#include <sfz/sfz.hpp>
+#include <pn/data>
+#include <pn/string>
 
 struct zip;
 struct zip_file;
@@ -17,10 +19,12 @@ namespace zipxx {
 
 class ZipArchive {
   public:
-    ZipArchive(const sfz::StringSlice& path, int flags);
+    ZipArchive(const pn::string_view& path, int flags);
+    ZipArchive(const ZipArchive&) = delete;
+    ZipArchive(ZipArchive&&)      = delete;
     ~ZipArchive();
 
-    const sfz::String& path() const;
+    pn::string_view path() const;
 
     size_t size() const;
 
@@ -29,26 +33,24 @@ class ZipArchive {
   private:
     zip* _c_obj;
 
-    sfz::String _path;
-
-    DISALLOW_COPY_AND_ASSIGN(ZipArchive);
+    pn::string _path;
 };
 
 class ZipFileReader {
   public:
     ZipFileReader(ZipArchive& archive, int index);
-    ZipFileReader(ZipArchive& archive, const sfz::StringSlice& path);
+    ZipFileReader(ZipArchive& archive, const pn::string_view& path);
+    ZipFileReader(const ZipFileReader&) = delete;
+    ZipFileReader(ZipFileReader&&)      = delete;
 
-    const sfz::String& path() const;
-    const sfz::Bytes& data() const;
+    pn::string_view path() const;
+    pn::data_view   data() const;
 
   private:
     void initialize(ZipArchive& archive, const struct zip_stat& st);
 
-    sfz::String _path;
-    sfz::Bytes _data;
-
-    DISALLOW_COPY_AND_ASSIGN(ZipFileReader);
+    pn::string _path;
+    pn::data   _data;
 };
 
 }  // namespace zipxx

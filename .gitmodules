@@ -1,6 +1,3 @@
-[submodule "ext/libsfz"]
-	path = ext/libsfz
-	url = git://github.com/sfiera/libsfz.git
-[submodule "ext/gmock-gyp"]
-	path = ext/gmock-gyp
-	url = https://github.com/sfiera/gmock-gyp.git
+[submodule "procyon"]
+	path = ext/procyon
+	url = https://github.com/arescentral/procyon.git
