@@ -8,6 +8,7 @@
 #define ZIPXX_ZIP_HPP_
 
 #include <exception>
+#include <memory>
 #include <pn/data>
 #include <pn/string>
 
