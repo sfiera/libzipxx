@@ -7,7 +7,7 @@
 
 #include <errno.h>
 #include <zip.h>
-#include <pn/file>
+#include <pn/output>
 
 using std::unique_ptr;
 
