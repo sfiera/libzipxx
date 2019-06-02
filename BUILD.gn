@@ -36,7 +36,7 @@ if (libzip == "bundled") {
       "libzip-1.1.3/lib",
       "config/include/$target_os",
     ]
-    libs = [ "-lz" ]
+    libs = [ "z" ]
   }
 
   static_library("libzip") {
