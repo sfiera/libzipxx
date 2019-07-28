@@ -36,7 +36,7 @@ if (libzip == "bundled") {
       "libzip-1.1.3/lib",
       "config/include/$target_os",
     ]
-    libs = [ "z" ]
+    defines = [ "ZIP_STATIC" ]
   }
 
   static_library("libzip") {
@@ -111,7 +111,6 @@ if (libzip == "bundled") {
       "libzip-1.1.3/lib/zip_source_crc.c",
       "libzip-1.1.3/lib/zip_source_deflate.c",
       "libzip-1.1.3/lib/zip_source_error.c",
-      "libzip-1.1.3/lib/zip_source_file.c",
       "libzip-1.1.3/lib/zip_source_filep.c",
       "libzip-1.1.3/lib/zip_source_free.c",
       "libzip-1.1.3/lib/zip_source_function.c",
@@ -143,8 +142,21 @@ if (libzip == "bundled") {
       "libzip-1.1.3/lib/zip_unchange_data.c",
       "libzip-1.1.3/lib/zip_utf-8.c",
     ]
+    deps = [
+      "//ext/zlib",
+    ]
     configs += [ ":libzip_private" ]
     public_configs = [ ":libzip_public" ]
+    if (target_os == "win") {
+      sources += [
+        "libzip-1.1.3/lib/zip_source_win32a.c",
+        "libzip-1.1.3/lib/zip_source_win32handle.c",
+        "libzip-1.1.3/lib/zip_source_win32utf8.c",
+        "libzip-1.1.3/lib/zip_source_win32w.c",
+      ]
+    } else {
+      sources += [ "libzip-1.1.3/lib/zip_source_file.c" ]
+    }
   }
 
   executable("zipcmp") {
