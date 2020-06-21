@@ -71,7 +71,7 @@ ZipArchive::~ZipArchive() {
 
 pn::string_view ZipArchive::path() const { return _path; }
 
-zip* ZipArchive::c_obj() { return _c_obj; }
+zip* ZipArchive::c_obj() const { return _c_obj; }
 
 ZipArchive::size_type ZipArchive::size() const { return zip_get_num_files(_c_obj); }
 
@@ -81,7 +81,7 @@ ZipArchive::size_type ZipArchive::locate(pn::string_view name) const {
 
 pn::string_view ZipArchive::name(size_type index) const { return zip_get_name(_c_obj, index, 0); }
 
-ZipFileReader::ZipFileReader(ZipArchive& archive, const pn::string_view& path) {
+ZipFileReader::ZipFileReader(const ZipArchive& archive, const pn::string_view& path) {
     struct zip_stat st;
     if (zip_stat(archive.c_obj(), path.copy().c_str(), 0, &st) != 0) {
         throw std::runtime_error(
@@ -91,7 +91,7 @@ ZipFileReader::ZipFileReader(ZipArchive& archive, const pn::string_view& path) {
     initialize(archive, st);
 }
 
-ZipFileReader::ZipFileReader(ZipArchive& archive, ZipArchive::size_type index) {
+ZipFileReader::ZipFileReader(const ZipArchive& archive, ZipArchive::size_type index) {
     struct zip_stat st;
     if (zip_stat_index(archive.c_obj(), index, 0, &st) != 0) {
         throw std::runtime_error(
@@ -101,7 +101,7 @@ ZipFileReader::ZipFileReader(ZipArchive& archive, ZipArchive::size_type index) {
     initialize(archive, st);
 }
 
-void ZipFileReader::initialize(ZipArchive& archive, const struct zip_stat& st) {
+void ZipFileReader::initialize(const ZipArchive& archive, const struct zip_stat& st) {
     _path = st.name;
 
     zip_file* file = zip_fopen_index(archive.c_obj(), st.index, 0);

@@ -35,7 +35,7 @@ class ZipArchive {
     size_type       locate(pn::string_view name) const;
     pn::string_view name(size_type index) const;
 
-    zip* c_obj();
+    zip* c_obj() const;
 
   private:
     zip* _c_obj;
@@ -45,8 +45,9 @@ class ZipArchive {
 
 class ZipFileReader {
   public:
-    ZipFileReader(ZipArchive& archive, ZipArchive::size_type index);
-    ZipFileReader(ZipArchive& archive, const pn::string_view& path);
+    ZipFileReader(const ZipArchive& archive, ZipArchive::size_type index);
+    ZipFileReader(const ZipArchive& archive, const pn::string_view& path);
+
     ZipFileReader(const ZipFileReader&) = delete;
     ZipFileReader(ZipFileReader&&)      = delete;
 
@@ -55,7 +56,7 @@ class ZipFileReader {
     pn::string_view string() const;
 
   private:
-    void initialize(ZipArchive& archive, const struct zip_stat& st);
+    void initialize(const ZipArchive& archive, const struct zip_stat& st);
 
     pn::string _path;
     pn::data   _data;
