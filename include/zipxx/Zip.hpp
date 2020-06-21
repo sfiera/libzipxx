@@ -46,6 +46,7 @@ class ZipFileReader {
 
     pn::string_view path() const;
     pn::data_view   data() const;
+    pn::string_view string() const;
 
   private:
     void initialize(ZipArchive& archive, const struct zip_stat& st);

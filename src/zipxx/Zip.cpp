@@ -7,6 +7,7 @@
 
 #include <errno.h>
 #include <zip.h>
+
 #include <pn/output>
 
 using std::unique_ptr;
@@ -116,5 +117,7 @@ void ZipFileReader::initialize(ZipArchive& archive, const struct zip_stat& st) {
 pn::string_view ZipFileReader::path() const { return _path; }
 
 pn::data_view ZipFileReader::data() const { return _data; }
+
+pn::string_view ZipFileReader::string() const { return _data.as_string(); }
 
 }  // namespace zipxx
