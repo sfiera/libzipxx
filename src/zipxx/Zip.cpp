@@ -75,6 +75,12 @@ zip* ZipArchive::c_obj() { return _c_obj; }
 
 ZipArchive::size_type ZipArchive::size() const { return zip_get_num_files(_c_obj); }
 
+ZipArchive::size_type ZipArchive::locate(pn::string_view name) const {
+    return zip_name_locate(_c_obj, name.copy().c_str(), 0);
+}
+
+pn::string_view ZipArchive::name(size_type index) const { return zip_get_name(_c_obj, index, 0); }
+
 ZipFileReader::ZipFileReader(ZipArchive& archive, const pn::string_view& path) {
     struct zip_stat st;
     if (zip_stat(archive.c_obj(), path.copy().c_str(), 0, &st) != 0) {
