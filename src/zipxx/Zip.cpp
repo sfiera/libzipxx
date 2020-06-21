@@ -73,7 +73,7 @@ pn::string_view ZipArchive::path() const { return _path; }
 
 zip* ZipArchive::c_obj() { return _c_obj; }
 
-size_t ZipArchive::size() const { return zip_get_num_files(_c_obj); }
+ZipArchive::size_type ZipArchive::size() const { return zip_get_num_files(_c_obj); }
 
 ZipFileReader::ZipFileReader(ZipArchive& archive, const pn::string_view& path) {
     struct zip_stat st;
@@ -85,7 +85,7 @@ ZipFileReader::ZipFileReader(ZipArchive& archive, const pn::string_view& path) {
     initialize(archive, st);
 }
 
-ZipFileReader::ZipFileReader(ZipArchive& archive, int index) {
+ZipFileReader::ZipFileReader(ZipArchive& archive, ZipArchive::size_type index) {
     struct zip_stat st;
     if (zip_stat_index(archive.c_obj(), index, 0, &st) != 0) {
         throw std::runtime_error(

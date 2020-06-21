@@ -20,6 +20,8 @@ namespace zipxx {
 
 class ZipArchive {
   public:
+    using size_type = int64_t;
+
     ZipArchive(const pn::string_view& path, int flags);
     ZipArchive(const ZipArchive&) = delete;
     ZipArchive(ZipArchive&&)      = delete;
@@ -27,7 +29,7 @@ class ZipArchive {
 
     pn::string_view path() const;
 
-    size_t size() const;
+    size_type size() const;
 
     zip* c_obj();
 
@@ -39,7 +41,7 @@ class ZipArchive {
 
 class ZipFileReader {
   public:
-    ZipFileReader(ZipArchive& archive, int index);
+    ZipFileReader(ZipArchive& archive, ZipArchive::size_type index);
     ZipFileReader(ZipArchive& archive, const pn::string_view& path);
     ZipFileReader(const ZipFileReader&) = delete;
     ZipFileReader(ZipFileReader&&)      = delete;
