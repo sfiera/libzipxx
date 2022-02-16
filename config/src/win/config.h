@@ -39,7 +39,7 @@
 #define HAVE_INT8_T 1
 
 /* Define to 1 if you have the <inttypes.h> header file. */
-#define HAVE_INTTYPES_H 1
+//#define HAVE_INTTYPES_H 1
 
 /* Define to 1 if you have the `z' library (-lz). */
 #define HAVE_LIBZ 1
@@ -72,7 +72,7 @@
 #define HAVE_STDLIB_H 1
 
 /* Define to 1 if you have the `strcasecmp' function. */
-#define HAVE_STRCASECMP 1
+//#define HAVE_STRCASECMP 1
 
 /* Define to 1 if you have the `strdup' function. */
 #define HAVE_STRDUP 1
