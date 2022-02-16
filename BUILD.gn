@@ -9,6 +9,9 @@ assert(libzip == "system" || libzip == "bundled")
 
 config("libzipxx_public") {
   include_dirs = [ "include" ]
+  if (current_toolchain == "//build/lib/win:msvc") {
+    libs = [ "User32.lib" ]
+  }
 }
 
 static_library("libzipxx") {

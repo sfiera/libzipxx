@@ -9,6 +9,7 @@
 #include <zip.h>
 
 #include <pn/output>
+#include <stdexcept>
 
 using std::unique_ptr;
 
