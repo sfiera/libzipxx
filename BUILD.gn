@@ -31,7 +31,9 @@ if (libzip == "bundled") {
   config("libzip_private") {
     defines = [ "HAVE_CONFIG_H" ]
     include_dirs = [ "config/src/$target_os" ]
-    cflags = [ "-Wno-implicit-function-declaration" ]
+    if (current_toolchain != "//build/lib/win:msvc") {
+      cflags = [ "-Wno-implicit-function-declaration" ]
+    }
   }
 
   config("libzip_public") {
