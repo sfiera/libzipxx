@@ -38,6 +38,10 @@
 #include "config.h"
 #endif
 
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#endif
+
 /* to have *_MAX definitions for all types when compiling with g++ */
 #define __STDC_LIMIT_MACROS
 

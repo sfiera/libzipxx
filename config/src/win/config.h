@@ -39,7 +39,7 @@
 #define HAVE_INT8_T 1
 
 /* Define to 1 if you have the <inttypes.h> header file. */
-//#define HAVE_INTTYPES_H 1
+#define HAVE_INTTYPES_H 1
 
 /* Define to 1 if you have the `z' library (-lz). */
 #define HAVE_LIBZ 1
@@ -81,7 +81,7 @@
 /* #undef HAVE_STRICMP */
 
 /* Define to 1 if you have the <strings.h> header file. */
-#define HAVE_STRINGS_H 1
+//#define HAVE_STRINGS_H 1
 
 /* Define to 1 if you have the <string.h> header file. */
 #define HAVE_STRING_H 1
@@ -116,7 +116,7 @@
 #define HAVE_UINT8_T 1
 
 /* Define to 1 if you have the <unistd.h> header file. */
-#define HAVE_UNISTD_H 1
+//#define HAVE_UNISTD_H 1
 
 /* Define to 1 or 0, depending whether the compiler supports simple visibility
    declarations. */

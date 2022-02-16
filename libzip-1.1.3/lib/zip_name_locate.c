@@ -64,7 +64,11 @@ _zip_name_locate(zip_t *za, const char *fname, zip_flags_t flags, zip_error_t *e
 
     if (flags & (ZIP_FL_NOCASE|ZIP_FL_NODIR|ZIP_FL_ENC_CP437)) {
 	/* can't use hash table */
+#ifndef HAVE_STRCASECMP
+	cmp = (flags & ZIP_FL_NOCASE) ? stricmp : strcmp;
+#else
 	cmp = (flags & ZIP_FL_NOCASE) ? strcasecmp : strcmp;
+#endif
 
 	for (i=0; i<za->nentry; i++) {
 	    fn = _zip_get_name(za, i, flags, error);
